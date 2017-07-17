@@ -136,16 +136,17 @@ void PieSlice::mousePressEvent(QMouseEvent *event)
 
 
 void PieSlice::mouseMoveEvent(QMouseEvent *event)
-//void PieSlice::positionChanged(QMouseEvent *event)
 {
-    qreal eventAngle = angleAt(event->pos());
+    if (m_pressed)
+    {
+        qreal eventAngle = angleAt(event->pos());
 
-    emit moved(eventAngle - m_lastAngleMove);
-//    emit positionChanged(eventAngle - m_lastAngleMove);
-    m_lastAngleMove = eventAngle;
+        emit moved(eventAngle - m_lastAngleMove);
+        m_lastAngleMove = eventAngle;
+    }
 
 // I'm leaving this here for now as a little reminder of some things I'd like to implement later on,
-// like snaping and the position/angle update (which already happen right now but made on the javascript side)
+// like snaping and the position/angle update (which already happens right now but made on the javascript side)
 //
 //    const qreal oldPos = position;
 //    qreal pos = positionAt(point);

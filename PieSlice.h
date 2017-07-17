@@ -52,7 +52,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
 //    void positionChanged(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void hoverEnterEvent(QHoverEvent *event);
     void hoverLeaveEvent(QHoverEvent *event);
     void mouseUngrabEvent();

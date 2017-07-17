@@ -123,16 +123,8 @@ ApplicationWindow
                     color: containsMouse ? Qt.lighter(baseColor, 1.2) : baseColor
 
                     onClicked: button.clicked(event)
-                    onMoved:
-                    {
-                        lengthsPie.handleSlicesMove(slicePomodoroLength, deltaAngle)
-                        textLabel.text = Math.round(angleSpan / 6) + "min"
-                    }
-                    onReleased:
-                    {
-                        angleSpan = Math.round(angleSpan / 6) * 6
-                        textLabel.text = "start"
-                    }
+                    onMoved: lengthsPie.handleSlicesMove(slicePomodoroLength, deltaAngle)
+                    onReleased: textLabel.text = "start"
                 }
                 C.PieSlice
                 {
@@ -143,16 +135,8 @@ ApplicationWindow
                     angleSpan: 30
 
                     onClicked: button.clicked(event)
-                    onMoved:
-                    {
-                        lengthsPie.handleSlicesMove(sliceBreakLength, deltaAngle)
-                        textLabel.text = Math.round(angleSpan / 6) + "min"
-                    }
-                    onReleased:
-                    {
-                        angleSpan = Math.round(angleSpan / 6) * 6
-                        textLabel.text = "start"
-                    }
+                    onMoved: lengthsPie.handleSlicesMove(sliceBreakLength, deltaAngle)
+                    onReleased: textLabel.text = "start"
                 }
 
                 function handleSlicesMove(sourceElement, deltaAngle)
