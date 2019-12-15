@@ -1,6 +1,4 @@
-#ifndef PIE_H
-#define PIE_H
-
+#pragma once
 #include <QQuickItem>
 
 class PieSlice;
@@ -8,17 +6,17 @@ class PieSlice;
 class Pie : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<PieSlice> slices READ slices)
+    Q_PROPERTY (QQmlListProperty<PieSlice> slices READ slices)
+
 
 public:
-    Pie(QQuickItem *parent = 0);
+    Pie (QQuickItem* parent = nullptr);
 
     QQmlListProperty<PieSlice> slices();
 
+
 private:
-    static void append_slice(QQmlListProperty<PieSlice> *list, PieSlice *slice);
+    static void append_slice (QQmlListProperty<PieSlice>* list, PieSlice* slice);
 
-    QList<PieSlice *> m_slices;
+    QList<PieSlice*> m_slices;
 };
-
-#endif // PIE_H

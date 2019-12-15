@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Pomodoro.qml</file>
+        <file>RingTone.wav</file>
     </qresource>
 </RCC>
