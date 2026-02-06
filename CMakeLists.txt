@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 4.0)
 
 project(Pomodoro LANGUAGES CXX)
 
@@ -8,8 +8,9 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 11.0)
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check http://doc.qt.io/qt-5/deployment-android.html for more information.
@@ -24,7 +25,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(Qt5 COMPONENTS Core Quick Multimedia MultimediaWidgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Quick Multimedia MultimediaWidgets REQUIRED)
 
 set (SOURCES
     Main.cpp
@@ -34,13 +35,13 @@ set (SOURCES
     PieSlice.cpp
     qml.qrc)
 
-if(ANDROID)
+if (ANDROID)
     add_library(Pomodoro SHARED ${SOURCES})
 else()
     add_executable(Pomodoro MACOSX_BUNDLE ${SOURCES})
 endif()
 
-target_compile_definitions(Pomodoro
-  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+qt_import_qml_plugins(Pomodoro)
+
 target_link_libraries(Pomodoro
-  PRIVATE Qt5::Core Qt5::Quick Qt5::Multimedia Qt5::MultimediaWidgets)
+    PRIVATE Qt6::Core Qt6::Quick Qt6::Multimedia Qt6::MultimediaWidgets)

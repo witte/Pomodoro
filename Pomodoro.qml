@@ -1,7 +1,7 @@
-import QtQuick 2.7
-import QtQuick.Controls 2.1
-import QtQuick.Dialogs 1.1
-import QtMultimedia 5.14
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtMultimedia
 import io.github.witte 1.0 as C
 
 /*
@@ -25,7 +25,7 @@ ApplicationWindow
     minimumHeight: 200
     minimumWidth: 200
     height: 480
-    title: qsTr ("Pomodoro")
+    title: qsTr("Pomodoro")
     color: mainBgColor
 
     property double sizeRate: ((height > width) ? app.width : app.height) * 0.92
@@ -63,13 +63,13 @@ ApplicationWindow
             {
                 when: (app.state === "running")
                 PropertyChanges { target: app; mainColor: app.pomodoroColor }
-                PropertyChanges { target: textLabel; text: qsTr ("stop") }
+                PropertyChanges { target: textLabel; text: qsTr("stop") }
             },
             State
             {
                 when: (app.state === "break")
                 PropertyChanges { target: app; mainColor: app.breakColor  }
-                PropertyChanges { target: textLabel; text: qsTr ("stop") }
+                PropertyChanges { target: textLabel; text: qsTr("stop") }
             }
         ]
     }
@@ -113,8 +113,8 @@ ApplicationWindow
                 }
                 else
                 {
-                    app.lastStartTime = new Date ()
-                    app.nextEndTime = new Date (new Date().getTime() + (app.pomodoroLength * 60000))
+                    app.lastStartTime = new Date()
+                    app.nextEndTime = new Date(new Date().getTime() + (app.pomodoroLength * 60000))
                     sliceElapsedTime.toAngle = slicePomodoroLength.fromAngle
 
                     app.state = "running"
@@ -135,13 +135,14 @@ ApplicationWindow
                     anchors.fill: parent
                     fromAngle: 6 * app.positionOffset
                     toAngle: 6 * (app.positionOffset + app.pomodoroLength)
-                    color: containsMouse ? Qt.lighter (baseColor, 1.2) : baseColor
+                    color: containsMouse ? Qt.lighter(baseColor, 1.2) : baseColor
 
-                    onClicked: button.clicked (event)
-                    onMoved:
+                    onClicked: button.clicked(event)
+                    onMoved: function(angle)
                     {
                         let time = angle / 6
-                        if ((time < 1) || (time + app.breakLength > 59)) return
+                        if ((time < 1) || (time + app.breakLength > 59))
+                            return
 
                         app.pomodoroLength = time
                         textLabel.text = app.pomodoroLength + "min"
@@ -153,15 +154,16 @@ ApplicationWindow
                 {
                     id: sliceBreakLength
                     anchors.fill: parent
-                    color: containsMouse ? Qt.lighter (app.breakColor, 1.2) : app.breakColor
+                    color: containsMouse ? Qt.lighter(app.breakColor, 1.2) : app.breakColor
                     fromAngle: 6 * (app.positionOffset + app.pomodoroLength)
                     toAngle:   6 * (app.positionOffset + app.pomodoroLength + app.breakLength)
 
-                    onClicked: button.clicked (event)
-                    onMoved:
+                    onClicked: button.clicked(event)
+                    onMoved: function(angle)
                     {
                         let time = (angle / 6) - app.pomodoroLength
-                        if ((time < 1) || (time + app.pomodoroLength > 59)) return
+                        if ((time < 1) || (time + app.pomodoroLength > 59))
+                            return
 
                         app.breakLength = time
                         textLabel.text = app.breakLength + "min"
@@ -190,7 +192,7 @@ ApplicationWindow
                 visible: !(app.state === "")
                 fromAngle: 0
                 toAngle: 359.999
-                onClicked: button.clicked (event)
+                onClicked: button.clicked(event)
             }
 
             C.PieSlice
@@ -200,7 +202,7 @@ ApplicationWindow
                 color: "#1f000000"
                 fromAngle: (6 * app.elapsedTimeOffset) - 0.05
                 toAngle:   6 * app.elapsedTimeOffset
-                onClicked: button.clicked (event)
+                onClicked: button.clicked(event)
             }
 
             Text
@@ -225,31 +227,33 @@ ApplicationWindow
         onTriggered:
         {
             let now = new Date()
-            let deltaTime = new Date (now.getTime() - app.lastStartTime.getTime())
-            sliceElapsedTime.toAngle = 0.1 * ((app.elapsedTimeOffset * 60) + deltaTime.getSeconds())
+            let deltaTime = new Date(now.getTime() - app.lastStartTime.getTime())
 
-            if (now < nextEndTime) return
+            sliceElapsedTime.toAngle = 0.1 * ((app.elapsedTimeOffset * 60) + (deltaTime.getMinutes() * 60) + deltaTime.getSeconds())
 
-            app.lastStartTime = new Date (now.getTime())
+            if (now < nextEndTime)
+                return
+
+            app.lastStartTime = new Date(now.getTime())
 
             if (app.state === "running")
             {
-                app.nextEndTime = new Date (now.getTime() + (breakLength * 60000))
+                app.nextEndTime = new Date(now.getTime() + (breakLength * 60000))
 
                 app.elapsedTimeOffset = app.positionOffset + app.pomodoroLength
 
                 app.state = "break"
-                messageDialog.text = qsTr ("Pomodoro has finished!")
+                messageDialog.text = qsTr("Pomodoro has finished!")
             }
             else
             {
-                app.nextEndTime = new Date (now.getTime() + (pomodoroLength * 60000))
+                app.nextEndTime = new Date(now.getTime() + (pomodoroLength * 60000))
 
                 app.positionOffset    = sliceBreakLength.toAngle / 6
                 app.elapsedTimeOffset = sliceBreakLength.toAngle / 6
 
                 app.state = "running"
-                messageDialog.text = qsTr ("Break has finished!")
+                messageDialog.text = qsTr("Break has finished!")
             }
 
             sliceElapsedTime.toAngle = 0.1 * ((app.elapsedTimeOffset * 60) + deltaTime.getSeconds())
@@ -265,7 +269,6 @@ ApplicationWindow
 
         source: "RingTone.wav"
     }
-
 
     MessageDialog
     {
